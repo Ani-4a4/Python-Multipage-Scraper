@@ -101,28 +101,28 @@ def sort_by_price(all_books):
                               key = lambda book: float(book[2].replace('Â£','')))
     return sorted_books
 
-all_books = scrape_all_pages()
-price_analysis(all_books)
+if __name__ == "__main__":
+    all_books = scrape_all_pages()
+    price_analysis(all_books)
 
+    with open('Books.csv', 'w', newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        writer.writerow(column_headers)
+        writer.writerows(all_books)
 
-with open('Books.csv', 'w', newline='', encoding='utf-8') as f:
-    writer = csv.writer(f)
-    writer.writerow(column_headers)
-    writer.writerows(all_books)
+    # Save books with specific rating
+    five_star = filter_by_rating(all_books, specific_rating='Five')
+    with open('5_Star_Books.csv', 'w', newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        writer.writerow(column_headers)
+        writer.writerows(five_star)
 
-# Save books with specific rating
-five_star = filter_by_rating(all_books, specific_rating='Five')
-with open('5_Star_Books.csv', 'w', newline='', encoding='utf-8') as f:
-    writer = csv.writer(f)
-    writer.writerow(column_headers)
-    writer.writerows(five_star)
-
-# Save 20 cheapest books
-cheap = sort_by_price(all_books)
-with open('Cheapest_Books.csv', 'w', newline='', encoding='utf-8') as f:
-    writer = csv.writer(f)
-    writer.writerow(column_headers)
-    writer.writerows(cheap)
+    # Save and sort by cheapest books
+    cheap = sort_by_price(all_books)
+    with open('Cheapest_Books.csv', 'w', newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        writer.writerow(column_headers)
+        writer.writerows(cheap)
 
 # for i in range(len(books_data)):
 #     print('Title', i + 1, ':', books_data[i][0])
